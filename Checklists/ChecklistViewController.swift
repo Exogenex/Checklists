@@ -7,7 +7,8 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController {
+class ChecklistViewController: UITableViewController, AddItemViewControllerDelegate {
+    
     var items = [ChecklistItem]()
 
     override func viewDidLoad() {
@@ -37,18 +38,15 @@ class ChecklistViewController: UITableViewController {
 
     }
     
-    // MARK: - Actions
-    @IBAction func addItem() {
-        let newRowIndex = items.count
-        
-        let item = ChecklistItem()
-        item.text = "I am a new row"
-        item.checked = true // Exercise
-        items.append(item)
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
+    // MARK: - Navigation
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
+        if segue.identifier == "AddItem" {
+            let controller = segue.destination as! AddItemViewController
+            controller.delegate = self
+        }
     }
 
     // MARK: - Table View Data Source
@@ -94,12 +92,30 @@ class ChecklistViewController: UITableViewController {
         commit editingStyle: UITableViewCell.EditingStyle,
         forRowAt indexPath: IndexPath
     ) {
-        // 1
         items.remove(at: indexPath.row)
         
-        // 2
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
+    }
+    
+    // MARK: - Add Item ViewController Delegates
+    func addItemViewControllerDidCancel(
+        _ controller: AddItemViewController
+    ) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func addItemViewController(
+        _ controller: AddItemViewController,
+        didFinishAdding item: ChecklistItem
+    ) {
+        let newRowIndex = items.count
+        items.append(item)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        navigationController?.popViewController(animated:true)
     }
     
     //MARK: - Configuraiton Functions
