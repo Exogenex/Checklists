@@ -132,47 +132,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         with item: ChecklistItem
     ) {
         let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text
+         label.text = item.text
     }
     
-    /*
-    //MARK: - Data Storage Functions
-    func documentsDirectory() -> URL {
-        let paths = FileManager.default.urls(
-            for: .documentDirectory,
-            in: .userDomainMask)
-        return paths[0]
-    }
     
-    func dataFilePath() -> URL {
-        return documentsDirectory().appendingPathComponent("Checklists.plist")
-    }
-    
-    func saveChecklistItems() {
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(checklist.items)
-            try data.write(
-                to: dataFilePath(),
-                options: Data.WritingOptions.atomic)
-        } catch {
-            print("Error encoding item array: \(error.localizedDescription)")
-        }
-    }
-    
-    //MARK: - Data Reading Functions
-    func loadChecklistItems() {
-        let path = dataFilePath()
-        
-        if let data = try? Data(contentsOf: path) {
-            let decoder = PropertyListDecoder()
-            do {
-                checklist.items = try decoder.decode(
-                    [ChecklistItem].self,
-                    from: data)
-            } catch {
-                print("Error decoding item array: \(error.localizedDescription)")
-            }
-        }
-    }*/
 }
